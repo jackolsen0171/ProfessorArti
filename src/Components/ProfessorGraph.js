@@ -72,16 +72,26 @@ const ProfessorGraph = ({ data, setData }) => {
             .text(d => d.id);
 
         function ticked() {
+            const isMobile = window.innerWidth < 768;
+
+            const bounds = {
+                minX: isMobile ? 50 : 120,
+                maxX: isMobile ? width - 50 : width - 120,
+                minY: isMobile ? 90 : 10,
+                maxY: isMobile ? height - 180 : height,
+            };
+
+            // Keep nodes inside the boundaries
+            node.attr("cx", d => d.x = Math.max(bounds.minX, Math.min(bounds.maxX, d.x)))
+                .attr("cy", d => d.y = Math.max(bounds.minY, Math.min(bounds.maxY, d.y)));
+
+            labels.attr("x", d => d.x)
+                .attr("y", d => d.y);
+
             link.attr("x1", d => d.source.x)
                 .attr("y1", d => d.source.y)
                 .attr("x2", d => d.target.x)
                 .attr("y2", d => d.target.y);
-
-            node.attr("cx", d => d.x)
-                .attr("cy", d => d.y);
-
-            labels.attr("x", d => d.x)
-                .attr("y", d => d.y);
         }
 
         function handleNodeClick(d) {

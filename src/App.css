@@ -122,6 +122,15 @@ button {
   transition: 0.2s;
 }
 
+.add-professor {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+
+
 button:hover {
   color: var(--hover-text);
   transform: translate(-0.25rem, -0.25rem);
