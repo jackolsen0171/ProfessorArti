@@ -10,7 +10,18 @@ const ProfessorGraph = ({ data, setData }) => {
     useEffect(() => {
         const width = window.innerWidth;
         const height = window.innerHeight;
-        const color = d3.scaleOrdinal(d3.schemeCategory10);
+        // McGill University color palette for nodes
+        const mcgillColors = [
+            '#ED1B2F', // McGill Red (primary)
+            '#006B96', // Mediterranean
+            '#0F4C75', // Night Blue
+            '#2D5016', // Forest Green
+            '#8B9DC3', // Periwinkle
+            '#6B7280', // Slate
+            '#C41E3A', // Dark Red
+            '#374151', // Dark Gray
+        ];
+        const color = d3.scaleOrdinal(mcgillColors);
 
         const links = data.links.map(d => ({ ...d }));
         const nodes = data.nodes.map(d => ({ ...d }));

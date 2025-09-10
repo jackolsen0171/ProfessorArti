@@ -1,0 +1,117 @@
+.mcgill-footer {
+  background: var(--mcgill-night-blue);
+  color: var(--mcgill-white);
+  margin-top: auto;
+}
+
+.mcgill-footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+}
+
+.footer-section h4 {
+  color: var(--mcgill-white);
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid var(--primary);
+  padding-bottom: 0.5rem;
+  display: inline-block;
+}
+
+.footer-section p {
+  color: var(--mcgill-light-gray);
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.footer-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-links li {
+  margin-bottom: 0.5rem;
+}
+
+.footer-links a {
+  color: var(--mcgill-light-gray);
+  text-decoration: none;
+  transition: color 0.2s ease;
+  font-weight: 500;
+}
+
+.footer-links a:hover {
+  color: var(--primary);
+}
+
+.footer-bottom {
+  border-top: 1px solid var(--mcgill-slate);
+  background: var(--mcgill-dark-gray);
+}
+
+.footer-bottom-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1.5rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.footer-bottom p {
+  margin: 0;
+  color: var(--mcgill-medium-gray);
+  font-size: 0.9rem;
+}
+
+.footer-badges {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.mcgill-badge,
+.ai-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.mcgill-badge {
+  background: var(--primary);
+  color: var(--mcgill-white);
+}
+
+.ai-badge {
+  background: var(--secondary);
+  color: var(--mcgill-white);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .mcgill-footer-content {
+    grid-template-columns: 1fr;
+    padding: 1.5rem;
+    gap: 1.5rem;
+  }
+  
+  .footer-bottom-content {
+    flex-direction: column;
+    text-align: center;
+    padding: 1rem;
+  }
+  
+  .footer-badges {
+    justify-content: center;
+  }
+}

@@ -1,0 +1,124 @@
+.mcgill-header {
+  background: var(--surface);
+  border-bottom: 3px solid var(--primary);
+  box-shadow: 0 2px 8px var(--shadow-color);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.mcgill-header-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.mcgill-brand {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.mcgill-logo {
+  display: flex;
+  align-items: center;
+}
+
+.mcgill-shield {
+  width: 48px;
+  height: 48px;
+  background: var(--primary);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(237, 27, 47, 0.2);
+}
+
+.shield-martlet {
+  font-size: 24px;
+  color: var(--mcgill-white);
+  filter: brightness(1.1);
+}
+
+.mcgill-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.mcgill-title {
+  font-size: 1.75rem;
+  font-weight: bold;
+  color: var(--primary);
+  margin: 0;
+  line-height: 1.2;
+}
+
+.mcgill-subtitle {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin: 0;
+  font-weight: 500;
+}
+
+.mcgill-nav {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: var(--text-primary);
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  border: 2px solid transparent;
+}
+
+.nav-link:hover {
+  color: var(--primary);
+  background: rgba(237, 27, 47, 0.05);
+  border-color: var(--primary);
+}
+
+.nav-link:active,
+.nav-link.active {
+  background: var(--primary);
+  color: var(--mcgill-white);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .mcgill-header-content {
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+  }
+  
+  .mcgill-brand {
+    gap: 0.75rem;
+  }
+  
+  .mcgill-title {
+    font-size: 1.5rem;
+  }
+  
+  .mcgill-subtitle {
+    font-size: 0.8rem;
+  }
+  
+  .mcgill-nav {
+    gap: 1rem;
+  }
+  
+  .nav-link {
+    font-size: 0.9rem;
+    padding: 0.4rem 0.8rem;
+  }
+}
