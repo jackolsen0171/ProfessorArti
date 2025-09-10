@@ -55,7 +55,7 @@ app.use('*', (req, res) => {
 app.listen(PORT, () => {
   console.log(`🚀 Professor Arti Backend Server running on port ${PORT}`);
   console.log(`📊 Health check: http://localhost:${PORT}/api/health`);
-  console.log(`🔗 CORS enabled for: http://localhost:3000`);
+  console.log(`🔗 CORS enabled for: http://localhost:8000, http://localhost:3000, http://localhost:3001`);
 });
 
 module.exports = app;

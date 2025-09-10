@@ -18,7 +18,7 @@ class ChromaDBService {
 
       // Initialize ChromaDB client
       this.client = new ChromaClient({
-        path: process.env.CHROMA_URL || 'http://localhost:8000'
+        path: process.env.CHROMA_URL || 'http://localhost:8002'
       });
 
       // Create or get collections
@@ -84,6 +84,42 @@ class ChromaDBService {
     } catch (error) {
       console.error('Document search error:', error);
       throw new Error(`Failed to search documents: ${error.message}`);
+    }
+  }
+
+  async searchSimilar(query, limit = 10, filter = {}) {
+    try {
+      await this.ensureInitialized();
+
+      // Only include 'where' if filter has content
+      const queryParams = {
+        queryTexts: [query],
+        nResults: limit
+      };
+      
+      // Add where clause only if filter is not empty
+      if (filter && Object.keys(filter).length > 0) {
+        queryParams.where = filter;
+      }
+
+      const results = await this.collections.documents.query(queryParams);
+
+      // Transform to format expected by chat route
+      const documents = results.documents[0] || [];
+      const metadatas = results.metadatas[0] || [];
+      const distances = results.distances[0] || [];
+      const ids = results.ids[0] || [];
+
+      return documents.map((document, index) => ({
+        id: ids[index],
+        document: document,
+        metadata: metadatas[index] || {},
+        distance: distances[index] || 1.0
+      }));
+
+    } catch (error) {
+      console.error('Similar search error:', error);
+      throw new Error(`Failed to search similar documents: ${error.message}`);
     }
   }
 

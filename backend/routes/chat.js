@@ -1,5 +1,7 @@
 const express = require('express');
 const router = express.Router();
+const openRouterService = require('../services/openai');
+const chromaService = require('../services/chromadb');
 
 // POST /api/chat - Send message and get AI response
 router.post('/', async (req, res) => {
@@ -12,20 +14,44 @@ router.post('/', async (req, res) => {
       });
     }
 
-    // TODO: Implement AI service integration
-    // For now, return a mock response
-    const mockResponse = {
-      id: Date.now().toString(),
-      message: `Hello! I'm Professor ${professorId}. You asked: "${message}". This is a placeholder response until AI integration is complete.`,
+    console.log(`🤖 Chat request: ${professorId} - "${message}"`);
+
+    // Search for relevant documents in ChromaDB
+    let context = [];
+    try {
+      // Semantic search for relevant context
+      const searchResults = await chromaService.searchSimilar(message, 3);
+      context = searchResults.map(result => ({
+        id: result.id,
+        content: result.document,
+        title: result.metadata?.title || 'Document',
+        similarity: result.distance
+      }));
+      
+      if (context.length > 0) {
+        console.log(`📚 Found ${context.length} relevant documents for context`);
+      }
+    } catch (contextError) {
+      console.warn('⚠️ Failed to search documents for context:', contextError.message);
+      // Continue without context - don't fail the chat
+    }
+
+    // Generate AI response with context
+    const aiResponse = await openRouterService.generateResponse(
+      message, 
       professorId,
-      conversationId: conversationId || Date.now().toString(),
-      timestamp: new Date().toISOString(),
-      sources: []
-    };
+      context,
+      [] // TODO: Add conversation history
+    );
+
+    console.log(`✅ AI response generated for ${professorId}`);
 
     res.json({
       success: true,
-      data: mockResponse
+      data: {
+        ...aiResponse,
+        conversationId: conversationId || Date.now().toString()
+      }
     });
 
   } catch (error) {
@@ -79,34 +105,21 @@ router.get('/history/:conversationId', async (req, res) => {
 // GET /api/chat/professors - Get available professors/personas
 router.get('/professors', async (req, res) => {
   try {
-    // TODO: Load professor personas from database or config
-    const professors = [
-      {
-        id: 'ai-tutor',
-        name: 'AI Tutor',
-        specialty: 'General Knowledge',
-        description: 'A helpful AI assistant ready to explain any topic',
-        avatar: '🤖'
-      },
-      {
-        id: 'science-prof',
-        name: 'Dr. Science',
-        specialty: 'Sciences',
-        description: 'Expert in physics, chemistry, biology, and mathematics',
-        avatar: '🧪'
-      },
-      {
-        id: 'history-prof',
-        name: 'Prof. History',
-        specialty: 'History & Culture',
-        description: 'Specialist in world history, cultures, and civilizations',
-        avatar: '📚'
-      }
-    ];
+    // Get professor personas from the AI service
+    const professorPersonas = Object.keys(openRouterService.personas).map(id => {
+      const persona = openRouterService.personas[id];
+      return {
+        id,
+        name: persona.name,
+        specialty: getSpecialtyFromId(id),
+        description: getDescriptionFromId(id),
+        avatar: getAvatarFromId(id)
+      };
+    });
 
     res.json({
       success: true,
-      data: professors
+      data: professorPersonas
     });
 
   } catch (error) {
@@ -117,5 +130,33 @@ router.get('/professors', async (req, res) => {
     });
   }
 });
+
+// Helper functions for professor data
+function getSpecialtyFromId(id) {
+  const specialties = {
+    'ai-tutor': 'General Knowledge',
+    'science-prof': 'Sciences',
+    'history-prof': 'History & Culture'
+  };
+  return specialties[id] || 'General Knowledge';
+}
+
+function getDescriptionFromId(id) {
+  const descriptions = {
+    'ai-tutor': 'A helpful AI assistant ready to explain any topic',
+    'science-prof': 'Expert in physics, chemistry, biology, and mathematics',
+    'history-prof': 'Specialist in world history, cultures, and civilizations'
+  };
+  return descriptions[id] || 'AI assistant ready to help';
+}
+
+function getAvatarFromId(id) {
+  const avatars = {
+    'ai-tutor': '🤖',
+    'science-prof': '🧪',
+    'history-prof': '📚'
+  };
+  return avatars[id] || '🤖';
+}
 
 module.exports = router;

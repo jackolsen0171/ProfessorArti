@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 
 const API_BASE_URL = 'http://localhost:8001/api';
@@ -10,6 +10,9 @@ const Chatbot = ({ professor }) => {
     const [error, setError] = useState(null);
     const [conversationId, setConversationId] = useState(null);
     const [professorInfo, setProfessorInfo] = useState(null);
+    const [uploadedFiles, setUploadedFiles] = useState([]);
+    const [uploading, setUploading] = useState(false);
+    const fileInputRef = useRef(null);
 
     // Load professor info on mount
     useEffect(() => {
@@ -113,143 +116,225 @@ const Chatbot = ({ professor }) => {
         setError(null);
     };
 
+    const handleFileUpload = async (event) => {
+        const files = Array.from(event.target.files);
+        if (files.length === 0) return;
+
+        setUploading(true);
+        setError(null);
+
+        try {
+            const formData = new FormData();
+            if (files.length === 1) {
+                // Single file upload
+                formData.append('document', files[0]);
+            } else {
+                // Multiple files upload
+                files.forEach(file => {
+                    formData.append('documents', file);
+                });
+            }
+
+            const uploadUrl = files.length === 1 
+                ? `${API_BASE_URL}/documents/upload`
+                : `${API_BASE_URL}/documents/batch-upload`;
+
+            const response = await axios.post(uploadUrl, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+
+            if (response.data.success) {
+                let newFiles = [];
+                
+                if (files.length === 1) {
+                    // Single file upload response
+                    const result = response.data.data;
+                    newFiles = [{
+                        name: result.originalName || result.filename,
+                        id: result.documentId || result.id,
+                        chunks: result.chunksStored || result.chunks || 1,
+                        status: 'uploaded'
+                    }];
+                } else {
+                    // Batch upload response
+                    const results = response.data.data.uploadedFiles || response.data.data;
+                    newFiles = results.map(result => ({
+                        name: result.originalName || result.filename,
+                        id: result.documentId || result.id,
+                        chunks: result.chunksStored || result.chunks || 1,
+                        status: 'uploaded'
+                    }));
+                }
+                
+                setUploadedFiles(prev => [...prev, ...newFiles]);
+                
+                // Add success message to chat
+                const successMessage = {
+                    text: `Successfully uploaded ${files.length} file(s): ${files.map(f => f.name).join(', ')}`,
+                    sender: "system",
+                    timestamp: new Date().toISOString(),
+                    isSystem: true
+                };
+                setMessages(prev => [...prev, successMessage]);
+            }
+        } catch (error) {
+            console.error('File upload error:', error);
+            setError(`Failed to upload files: ${error.response?.data?.error || error.message}`);
+        } finally {
+            setUploading(false);
+            if (fileInputRef.current) {
+                fileInputRef.current.value = '';
+            }
+        }
+    };
+
+    const removeFile = (fileId) => {
+        setUploadedFiles(prev => prev.filter(f => f.id !== fileId));
+    };
+
+    const triggerFileUpload = () => {
+        if (fileInputRef.current) {
+            fileInputRef.current.click();
+        }
+    };
+
     return (
-        <div className="chat-container">
-            <div className="chat-header">
-                <h1>
-                    {professorInfo?.avatar} Chat with {professorInfo?.name || professor}
-                </h1>
-                {professorInfo?.specialty && (
-                    <p style={{ 
-                        color: '#006B96', 
-                        fontSize: '14px', 
-                        margin: '5px 0',
-                        fontStyle: 'italic'
-                    }}>
-                        Specializes in: {professorInfo.specialty}
-                    </p>
-                )}
-                {professorInfo?.description && (
-                    <p style={{ 
-                        color: '#666', 
-                        fontSize: '12px', 
-                        margin: '0 0 15px 0'
-                    }}>
-                        {professorInfo.description}
-                    </p>
-                )}
+        <div className="modern-chat-container">
+            <div className="modern-chat-header">
+                <div className="professor-info">
+                    <span className="professor-avatar">{professorInfo?.avatar || '🤖'}</span>
+                    <div className="professor-details">
+                        <h2 className="professor-name">{professorInfo?.name || professor}</h2>
+                        {professorInfo?.specialty && (
+                            <p className="professor-specialty">Specializes in: {professorInfo.specialty}</p>
+                        )}
+                    </div>
+                </div>
             </div>
 
             {error && (
-                <div style={{ 
-                    color: '#ED1B2F', 
-                    background: '#ffe6e6', 
-                    padding: '10px', 
-                    borderRadius: '5px',
-                    margin: '10px 0',
-                    fontSize: '14px'
-                }}>
+                <div className="error-message">
                     ⚠️ {error}
                 </div>
             )}
 
-            <div className="chat-box">
+            {uploadedFiles.length > 0 && (
+                <div className="uploaded-files-section">
+                    <h4>📎 Uploaded Files</h4>
+                    <div className="uploaded-files-list">
+                        {uploadedFiles.map(file => (
+                            <div key={file.id} className="uploaded-file-item">
+                                <span className="file-name">📄 {file.name}</span>
+                                <span className="file-chunks">{file.chunks} chunks</span>
+                                <button 
+                                    className="remove-file-btn"
+                                    onClick={() => removeFile(file.id)}
+                                    title="Remove file"
+                                >
+                                    ✕
+                                </button>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
+
+            <div className="modern-chat-messages">
                 {messages.length === 0 && (
-                    <div style={{
-                        color: '#666',
-                        fontStyle: 'italic',
-                        textAlign: 'center',
-                        padding: '20px'
-                    }}>
-                        Start a conversation with {professorInfo?.name || professor}!
+                    <div className="empty-chat-message">
+                        👋 Start a conversation with {professorInfo?.name || professor}!
                     </div>
                 )}
                 {messages.map((msg, index) => {
                     const isUser = msg.sender === "user";
+                    const isSystem = msg.sender === "system";
+                    const messageClass = isUser ? "modern-user-message" : isSystem ? "modern-system-message" : "modern-bot-message";
+                    
                     return (
-                        <div 
-                            key={index} 
-                            className={isUser ? "user-message" : "bot-message"}
-                            style={{
-                                opacity: msg.isError ? 0.7 : 1,
-                                borderLeft: msg.isError ? '3px solid #ED1B2F' : 'none'
-                            }}
-                        >
-                            <div className="message-header">
-                                <strong>
-                                    {isUser ? "You" : professorInfo?.name || "Professor"}: 
-                                </strong>
+                        <div key={index} className={messageClass}>
+                            <div className="message-content">
+                                {msg.text}
+                            </div>
+                            <div className="message-meta">
+                                <span className="message-sender">
+                                    {isUser ? "You" : isSystem ? "System" : professorInfo?.name || "Professor"}
+                                </span>
                                 {msg.timestamp && (
-                                    <span style={{ fontSize: '10px', color: '#999', marginLeft: '10px' }}>
+                                    <span className="message-time">
                                         {new Date(msg.timestamp).toLocaleTimeString()}
                                     </span>
                                 )}
                             </div>
-                            <div className="message-content">
-                                {msg.text}
-                            </div>
                             {msg.sources && msg.sources.length > 0 && (
-                                <div style={{ 
-                                    fontSize: '11px', 
-                                    color: '#666', 
-                                    marginTop: '5px',
-                                    fontStyle: 'italic'
-                                }}>
-                                    Sources: {msg.sources.map(s => s.title).join(', ')}
+                                <div className="message-sources">
+                                    📚 Sources: {msg.sources.map(s => s.title).join(', ')}
                                 </div>
                             )}
                         </div>
                     );
                 })}
                 {loading && (
-                    <div style={{ 
-                        textAlign: 'center', 
-                        color: '#006B96',
-                        padding: '10px',
-                        fontStyle: 'italic'
-                    }}>
-                        {professorInfo?.name || 'Professor'} is thinking...
+                    <div className="typing-indicator">
+                        <div className="typing-dots">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                        <span className="typing-text">{professorInfo?.name || 'Professor'} is thinking...</span>
                     </div>
                 )}
             </div>
 
-            <div className="chat-input-container">
-                <input
-                    autoComplete="off"
-                    type="text"
-                    value={input}
-                    onChange={(e) => setInput(e.target.value)}
-                    onKeyPress={handleKeyPress}
-                    id="chat-input"
-                    placeholder={`Ask ${professorInfo?.name || professor || "the professor"} a question...`}
-                    disabled={loading}
-                    style={{
-                        opacity: loading ? 0.6 : 1,
-                        cursor: loading ? 'not-allowed' : 'text'
-                    }}
+            <div className="modern-input-container">
+                <input 
+                    type="file" 
+                    ref={fileInputRef}
+                    onChange={handleFileUpload}
+                    style={{ display: 'none' }}
+                    multiple
+                    accept=".txt,.pdf,.doc,.docx,.md"
                 />
-                <div className="buttons">
+                
+                <div className="input-group">
                     <button 
-                        id="send" 
+                        className="file-upload-btn"
+                        onClick={triggerFileUpload}
+                        disabled={uploading || loading}
+                        title="Upload files"
+                    >
+                        {uploading ? '⏳' : '📎'}
+                    </button>
+                    
+                    <input
+                        autoComplete="off"
+                        type="text"
+                        value={input}
+                        onChange={(e) => setInput(e.target.value)}
+                        onKeyPress={handleKeyPress}
+                        className="modern-text-input"
+                        placeholder={`Ask ${professorInfo?.name || professor || "the professor"} a question...`}
+                        disabled={loading}
+                    />
+                    
+                    <button 
+                        className="send-btn"
                         onClick={sendMessage}
                         disabled={loading || !input.trim()}
-                        style={{
-                            opacity: (loading || !input.trim()) ? 0.6 : 1,
-                            cursor: (loading || !input.trim()) ? 'not-allowed' : 'pointer'
-                        }}
+                        title="Send message"
                     >
-                        {loading ? 'Sending...' : 'Send'}
+                        {loading ? '⏳' : '➤'}
                     </button>
+                </div>
+                
+                <div className="action-buttons">
                     <button 
-                        id="clear" 
+                        className="clear-btn outline"
                         onClick={clearMessages}
                         disabled={loading}
-                        style={{
-                            opacity: loading ? 0.6 : 1,
-                            cursor: loading ? 'not-allowed' : 'pointer'
-                        }}
                     >
-                        Clear
+                        Clear Chat
                     </button>
                 </div>
             </div>

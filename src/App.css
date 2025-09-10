@@ -356,3 +356,436 @@ button.outline:hover {
   padding: 1.2vh 1.5vw;
 }
 
+/* ========== MODERN CHAT INTERFACE ========== */
+
+.modern-chat-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 1rem;
+  min-height: calc(100vh - 120px);
+  max-height: calc(100vh - 120px);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  overflow: hidden;
+}
+
+.modern-chat-header {
+  background: var(--surface);
+  border-radius: 12px;
+  padding: 1rem 1.5rem;
+  box-shadow: 0 2px 8px var(--shadow-color);
+  border: 1px solid var(--border-color);
+}
+
+.professor-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.professor-avatar {
+  font-size: 2.5rem;
+  background: linear-gradient(135deg, var(--primary), var(--primary-hover));
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(237, 27, 47, 0.2);
+}
+
+.professor-details {
+  flex: 1;
+}
+
+.professor-name {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.professor-specialty {
+  font-size: 0.9rem;
+  color: var(--secondary);
+  margin: 0.25rem 0 0 0;
+  font-style: italic;
+}
+
+.error-message {
+  background: #ffe6e6;
+  color: var(--primary);
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  border-left: 4px solid var(--primary);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.uploaded-files-section {
+  background: var(--surface);
+  border-radius: 12px;
+  padding: 1rem;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 2px 8px var(--shadow-color);
+}
+
+.uploaded-files-section h4 {
+  margin: 0 0 0.75rem 0;
+  color: var(--text-primary);
+  font-size: 1rem;
+}
+
+.uploaded-files-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.uploaded-file-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  background: var(--mcgill-light-gray);
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+}
+
+.file-name {
+  flex: 1;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.file-chunks {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  background: var(--surface);
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  border: 1px solid var(--border-color);
+}
+
+.remove-file-btn {
+  background: transparent;
+  border: none;
+  color: var(--primary);
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+}
+
+.remove-file-btn:hover {
+  background: var(--primary);
+  color: var(--surface);
+  transform: none;
+  box-shadow: none;
+}
+
+.modern-chat-messages {
+  flex: 1;
+  background: var(--surface);
+  border-radius: 12px;
+  padding: 1rem;
+  overflow-y: auto;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 2px 8px var(--shadow-color);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  min-height: 0;
+  max-height: none;
+}
+
+.empty-chat-message {
+  text-align: center;
+  color: var(--text-secondary);
+  font-style: italic;
+  padding: 2rem;
+  font-size: 1.1rem;
+}
+
+.modern-user-message {
+  align-self: flex-end;
+  max-width: 75%;
+  background: linear-gradient(135deg, var(--primary), var(--primary-hover));
+  color: var(--surface);
+  border-radius: 18px 18px 6px 18px;
+  padding: 0.75rem 1rem;
+  box-shadow: 0 2px 8px rgba(237, 27, 47, 0.2);
+}
+
+.modern-bot-message {
+  align-self: flex-start;
+  max-width: 75%;
+  background: var(--mcgill-light-gray);
+  color: var(--text-primary);
+  border-radius: 18px 18px 18px 6px;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 1px 4px var(--shadow-color);
+}
+
+.modern-system-message {
+  align-self: center;
+  max-width: 85%;
+  background: var(--secondary);
+  color: var(--surface);
+  border-radius: 12px;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  text-align: center;
+  box-shadow: 0 2px 6px rgba(0, 107, 150, 0.2);
+}
+
+.message-content {
+  line-height: 1.4;
+  margin-bottom: 0.5rem;
+}
+
+.modern-system-message .message-content {
+  margin-bottom: 0;
+}
+
+.message-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.75rem;
+  opacity: 0.7;
+}
+
+.message-sender {
+  font-weight: 600;
+}
+
+.message-time {
+  font-style: italic;
+}
+
+.message-sources {
+  font-size: 0.8rem;
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  opacity: 0.8;
+}
+
+.modern-bot-message .message-sources {
+  border-top-color: var(--border-color);
+}
+
+.typing-indicator {
+  align-self: flex-start;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: var(--mcgill-light-gray);
+  border-radius: 18px 18px 18px 6px;
+  border: 1px solid var(--border-color);
+  max-width: 200px;
+}
+
+.typing-dots {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.typing-dots span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--secondary);
+  animation: typing 1.4s infinite ease-in-out both;
+}
+
+.typing-dots span:nth-child(1) { animation-delay: -0.32s; }
+.typing-dots span:nth-child(2) { animation-delay: -0.16s; }
+
+@keyframes typing {
+  0%, 80%, 100% {
+    transform: scale(0);
+  }
+  40% {
+    transform: scale(1);
+  }
+}
+
+.typing-text {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+.modern-input-container {
+  background: var(--surface);
+  border-radius: 12px;
+  padding: 1rem;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 2px 8px var(--shadow-color);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--mcgill-light-gray);
+  border-radius: 25px;
+  padding: 0.5rem;
+  border: 2px solid var(--border-color);
+  transition: border-color 0.2s ease;
+}
+
+.input-group:focus-within {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(237, 27, 47, 0.1);
+}
+
+.file-upload-btn {
+  background: var(--secondary);
+  border: none;
+  color: var(--surface);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.file-upload-btn:hover {
+  background: var(--mcgill-night-blue);
+  transform: scale(1.05);
+  box-shadow: 0 2px 8px rgba(0, 107, 150, 0.3);
+}
+
+.file-upload-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.modern-text-input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  color: var(--text-primary);
+  outline: none;
+  line-height: 1.4;
+}
+
+.modern-text-input::placeholder {
+  color: var(--text-secondary);
+  opacity: 0.7;
+}
+
+.modern-text-input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.send-btn {
+  background: var(--primary);
+  border: none;
+  color: var(--surface);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.send-btn:hover:not(:disabled) {
+  background: var(--primary-hover);
+  transform: scale(1.05);
+  box-shadow: 0 2px 8px rgba(237, 27, 47, 0.3);
+}
+
+.send-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: center;
+}
+
+.clear-btn {
+  padding: 0.5rem 1.5rem;
+  font-size: 0.9rem;
+  border-radius: 20px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .modern-chat-container {
+    max-width: 100%;
+    padding: 0.5rem;
+    min-height: calc(100vh - 100px);
+    max-height: calc(100vh - 100px);
+  }
+  
+  .modern-chat-header {
+    padding: 0.75rem 1rem;
+  }
+  
+  .professor-avatar {
+    width: 50px;
+    height: 50px;
+    font-size: 2rem;
+  }
+  
+  .professor-name {
+    font-size: 1.25rem;
+  }
+  
+  .modern-user-message,
+  .modern-bot-message {
+    max-width: 85%;
+  }
+  
+  .input-group {
+    padding: 0.4rem;
+  }
+  
+  .file-upload-btn,
+  .send-btn {
+    width: 36px;
+    height: 36px;
+    font-size: 1rem;
+  }
+  
+  .modern-text-input {
+    padding: 0.6rem 0.8rem;
+    font-size: 0.95rem;
+  }
+}
+

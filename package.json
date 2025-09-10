@@ -12,6 +12,7 @@
     "express": "^4.18.2",
     "multer": "^1.4.5-lts.1",
     "openai": "^4.20.1",
+    "pdf-parse": "^1.1.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router-dom": "^6.22.3",
@@ -24,7 +25,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "backend": "node backend/server.js",
-    "dev": "concurrently \"npm run backend\" \"npm start\"",
+    "dev": "./scripts/start-dev.sh",
+    "kill": "./scripts/kill-everything.sh",
     "backend:dev": "nodemon backend/server.js"
   },
   "devDependencies": {

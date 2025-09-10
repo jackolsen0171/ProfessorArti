@@ -1,10 +1,10 @@
 const OpenAI = require('openai');
 
-class OpenAIService {
+class OpenRouterService {
   constructor() {
     this.client = null;
     this.initialized = false;
-    this.apiKey = process.env.OPENAI_API_KEY;
+    this.apiKey = process.env.OPENROUTER_API_KEY;
     
     // Professor personas
     this.personas = {
@@ -30,23 +30,28 @@ class OpenAIService {
       }
 
       if (!this.apiKey) {
-        console.warn('⚠️ OpenAI API key not provided. AI features will be limited.');
+        console.warn('⚠️ OpenRouter API key not provided. AI features will be limited.');
         return;
       }
 
       this.client = new OpenAI({
-        apiKey: this.apiKey
+        baseURL: 'https://openrouter.ai/api/v1',
+        apiKey: this.apiKey,
+        defaultHeaders: {
+          'HTTP-Referer': 'https://professorarti.com',
+          'X-Title': 'Professor Arti'
+        }
       });
 
       // Test the connection
       await this.client.models.list();
       
       this.initialized = true;
-      console.log('✅ OpenAI service initialized successfully');
+      console.log('✅ OpenRouter service initialized successfully');
 
     } catch (error) {
-      console.error('❌ OpenAI initialization error:', error);
-      throw new Error(`Failed to initialize OpenAI: ${error.message}`);
+      console.error('❌ OpenRouter initialization error:', error);
+      throw new Error(`Failed to initialize OpenRouter: ${error.message}`);
     }
   }
 
@@ -88,7 +93,7 @@ class OpenAIService {
       });
 
       const completion = await this.client.chat.completions.create({
-        model: 'gpt-4',
+        model: 'openai/gpt-4o-mini',
         messages: messages,
         max_tokens: 1000,
         temperature: 0.7,
@@ -168,11 +173,11 @@ class OpenAIService {
       await this.ensureInitialized();
 
       if (!this.client) {
-        throw new Error('OpenAI client not available for embeddings');
+        throw new Error('OpenRouter client not available for embeddings');
       }
 
       const response = await this.client.embeddings.create({
-        model: 'text-embedding-ada-002',
+        model: 'openai/text-embedding-ada-002',
         input: text
       });
 
@@ -223,6 +228,6 @@ class OpenAIService {
 }
 
 // Create singleton instance
-const openAIService = new OpenAIService();
+const openRouterService = new OpenRouterService();
 
-module.exports = openAIService;
+module.exports = openRouterService;
