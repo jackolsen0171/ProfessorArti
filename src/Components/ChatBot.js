@@ -175,7 +175,9 @@ const Chatbot = ({ professor }) => {
                     text: `Successfully uploaded ${files.length} file(s): ${files.map(f => f.name).join(', ')}`,
                     sender: "system",
                     timestamp: new Date().toISOString(),
-                    isSystem: true
+                    isSystem: true,
+                    hasCalendarAction: true,
+                    fileNames: files.map(f => f.name)
                 };
                 setMessages(prev => [...prev, successMessage]);
             }
@@ -192,6 +194,62 @@ const Chatbot = ({ professor }) => {
 
     const removeFile = (fileId) => {
         setUploadedFiles(prev => prev.filter(f => f.id !== fileId));
+    };
+
+    const extractDatesToCalendar = async (fileNames) => {
+        try {
+            setLoading(true);
+            
+            // Create a comprehensive prompt that includes the file names and asks the backend
+            // to retrieve the actual document content for analysis
+            const extractionPrompt = `Please extract calendar events from the uploaded document(s): ${fileNames.join(', ')}. 
+            
+            Use the document content that was uploaded and stored in the system. Look for:
+            - Assignment due dates
+            - Exam dates and times
+            - Project deadlines
+            - Office hours
+            - Class meeting times
+            - Important academic dates
+            
+            Convert any found dates to calendar events.`;
+            
+            console.log('📄 Requesting calendar extraction for files:', fileNames);
+            
+            const response = await axios.post(`${API_BASE_URL}/calendar/extract-events`, {
+                text: extractionPrompt,
+                fileNames: fileNames, // Pass file names so backend can retrieve content
+                professorId: professor || 'ai-tutor'
+            });
+
+            if (response.data.success) {
+                const { extractedEvents, createdEvents, events } = response.data;
+                
+                // Add success message to chat
+                const calendarMessage = {
+                    text: `📅 Calendar Extraction Results:\n• Found ${extractedEvents} potential events\n• Successfully added ${createdEvents} events to your Apple Calendar\n• Events include: ${events.filter(e => e.calendarResult.success).map(e => e.title).join(', ')}`,
+                    sender: "system",
+                    timestamp: new Date().toISOString(),
+                    isSystem: true,
+                    isCalendar: true
+                };
+                setMessages(prev => [...prev, calendarMessage]);
+            } else {
+                throw new Error('Failed to extract calendar events');
+            }
+        } catch (error) {
+            console.error('Calendar extraction error:', error);
+            const errorMessage = {
+                text: `❌ Failed to extract dates to calendar: ${error.response?.data?.message || error.message}`,
+                sender: "system",
+                timestamp: new Date().toISOString(),
+                isSystem: true,
+                isError: true
+            };
+            setMessages(prev => [...prev, errorMessage]);
+        } finally {
+            setLoading(false);
+        }
     };
 
     const triggerFileUpload = () => {
@@ -270,6 +328,18 @@ const Chatbot = ({ professor }) => {
                             {msg.sources && msg.sources.length > 0 && (
                                 <div className="message-sources">
                                     📚 Sources: {msg.sources.map(s => s.title).join(', ')}
+                                </div>
+                            )}
+                            {msg.hasCalendarAction && msg.fileNames && (
+                                <div className="calendar-action">
+                                    <button 
+                                        className="calendar-extract-btn"
+                                        onClick={() => extractDatesToCalendar(msg.fileNames)}
+                                        disabled={loading}
+                                        title="Extract dates from uploaded documents to your Apple Calendar"
+                                    >
+                                        📅 Extract Dates to Calendar
+                                    </button>
                                 </div>
                             )}
                         </div>

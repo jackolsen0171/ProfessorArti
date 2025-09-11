@@ -744,6 +744,47 @@ button.outline:hover {
   border-radius: 20px;
 }
 
+/* Calendar Action Styles */
+.calendar-action {
+  margin-top: 0.5rem;
+  display: flex;
+  justify-content: center;
+}
+
+.calendar-extract-btn {
+  background: var(--mcgill-forest);
+  border: none;
+  color: var(--mcgill-white);
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(45, 80, 22, 0.2);
+}
+
+.calendar-extract-btn:hover:not(:disabled) {
+  background: #1a3209;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(45, 80, 22, 0.3);
+}
+
+.calendar-extract-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(45, 80, 22, 0.2);
+}
+
+.calendar-extract-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: 0 2px 4px rgba(45, 80, 22, 0.1);
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .modern-chat-container {

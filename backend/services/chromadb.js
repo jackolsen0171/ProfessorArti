@@ -64,22 +64,32 @@ class ChromaDBService {
     }
   }
 
-  async searchDocuments(query, limit = 10, filter = {}) {
+  async searchDocuments(query, limit = 10, filter = null) {
     try {
       await this.ensureInitialized();
 
-      const results = await this.collections.documents.query({
+      const queryParams = {
         queryTexts: [query],
-        nResults: limit,
-        where: filter
-      });
-
-      return {
-        documents: results.documents[0] || [],
-        metadatas: results.metadatas[0] || [],
-        distances: results.distances[0] || [],
-        ids: results.ids[0] || []
+        nResults: limit
       };
+
+      // Only add where clause if filter is provided and not empty
+      if (filter && Object.keys(filter).length > 0) {
+        queryParams.where = filter;
+      }
+
+      const results = await this.collections.documents.query(queryParams);
+
+      // Return documents in the format expected by calendar route
+      const documents = results.documents[0] || [];
+      const metadatas = results.metadatas[0] || [];
+      const ids = results.ids[0] || [];
+      
+      return documents.map((content, index) => ({
+        content: content,
+        metadata: metadatas[index] || {},
+        id: ids[index] || `doc_${index}`
+      }));
 
     } catch (error) {
       console.error('Document search error:', error);
