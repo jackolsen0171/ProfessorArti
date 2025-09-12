@@ -13,26 +13,35 @@
     "multer": "^1.4.5-lts.1",
     "openai": "^4.20.1",
     "pdf-parse": "^1.1.1",
+    "postcss": "^8.5.6",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router-dom": "^6.22.3",
-    "react-scripts": "5.0.1",
     "run-applescript": "^7.1.0",
+    "tailwindcss": "^3.4.17",
     "web-vitals": "^4.2.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
+    "start": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "vitest",
     "backend": "node backend/server.js",
     "dev": "./scripts/start-dev.sh",
     "kill": "./scripts/kill-everything.sh",
     "backend:dev": "nodemon backend/server.js"
   },
   "devDependencies": {
+    "@types/d3": "^7.4.3",
+    "@types/node": "^24.3.1",
+    "@types/react": "^19.1.12",
+    "@types/react-dom": "^19.1.9",
+    "@vitejs/plugin-react": "^5.0.2",
+    "autoprefixer": "^10.4.21",
     "concurrently": "^7.6.0",
-    "nodemon": "^3.0.1"
+    "nodemon": "^3.0.1",
+    "typescript": "^5.9.2",
+    "vite": "^6.3.6"
   },
   "eslintConfig": {
     "extends": [

@@ -1,0 +1,41 @@
+
+## Session Summary - Apple Calendar Integration + Tailwind CSS v4 Complete
+
+### Major Accomplishments
+- **Apple Calendar Integration**: Full implementation using AppleScript with run-applescript library
+  - Created backend/services/calendar.js with getCalendars(), createEvent(), getUpcomingEvents(), createEventFromAI()
+  - Added REST API endpoints in backend/routes/calendar.js (GET /calendars, POST /events, POST /extract-events)
+  - Fixed timezone issues by using ISO format dates and component-based AppleScript date construction
+  - Resolved ChromaDB document retrieval for AI-powered date extraction from uploaded syllabi
+  - Successfully tested end-to-end workflow: upload document → extract dates → create calendar events
+
+- **Tailwind CSS v4 Configuration**: Complete setup using CRACO
+  - Created craco.config.js to override Create React App webpack configuration
+  - Updated package.json scripts to use CRACO (start, build, test)
+  - Configured postcss.config.js with @tailwindcss/postcss plugin
+  - Updated src/index.css to v4 import syntax: @import 'tailwindcss'
+  - Enhanced tailwind.config.js with McGill University brand colors and Professor Arti customizations
+  - Successfully resolved CRA + Tailwind v4 compatibility issues
+
+### Technical Decisions Made
+- Used AppleScript over EventKit for broader calendar app compatibility
+- Implemented CRACO instead of ejecting from Create React App
+- Created comprehensive error handling for date formatting edge cases
+- Added McGill brand colors: mcgill-red (#ed1944), mcgill-forest (#2d5016), graph-node, calendar-green
+- Established timezone-safe date handling pattern: ${date}T12:00:00 for dateless events
+
+### Current Status
+- Apple Calendar integration: ✅ COMPLETE AND TESTED
+- Tailwind CSS v4: ✅ COMPLETE AND COMPILING
+- Application running successfully at http://localhost:8000
+- Both backend (port 3001) and frontend (port 8000) operational
+
+### Next Priority - User Explicit Request
+User stated: 'fully configure v4, the whole codebase should be styled with tailwind'
+- Apply Tailwind styling throughout Professor Arti components
+- Utilize new McGill University brand colors and custom animations
+- Style ProfessorGraph.js, Chat.js, ChatBot.js, Home.js with Tailwind classes
+- Implement responsive design patterns using Tailwind utilities
+
+### Status: Ready for comprehensive Tailwind styling phase
+

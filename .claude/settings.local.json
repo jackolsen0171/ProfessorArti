@@ -7,7 +7,8 @@
       "mcp__context7__get-library-docs",
       "WebFetch(domain:raw.githubusercontent.com)",
       "Bash(pip install:*)",
-      "Bash(python:*)"
+      "Bash(python:*)",
+      "Bash(npm install:*)"
     ],
     "deny": [],
     "ask": []
