@@ -8,10 +8,14 @@ module.exports = {
     extend: {
       // McGill University Brand Colors
       colors: {
-        'mcgill-red': '#ED1B2F',
-        'mcgill-forest': '#2D5016', 
-        'mcgill-grey': '#5A5A5A',
-        'mcgill-white': '#FFFFFF',
+        'mcgill': {
+          'red': '#ED1B2F',
+          'grey': '#5D6770',
+          'lightgrey': '#F5F5F5',
+          'darkblue': '#003F5C',
+          'forest': '#2D5016',
+          'white': '#FFFFFF',
+        },
         
         // Professor Arti Graph Colors
         'graph-node': '#3B82F6',

@@ -24,14 +24,23 @@ class CalendarService {
     // Get upcoming events from a calendar
     async getUpcomingEvents(calendarName = this.defaultCalendar, daysAhead = 30) {
         try {
+            // Limit days to prevent timeout issues - max 90 days
+            const limitedDays = Math.min(daysAhead, 90);
+            console.log(`📅 Fetching ${limitedDays} days of events from calendar "${calendarName}"`);
+            
             const script = `
                 tell application "Calendar"
                     set targetCalendar to calendar "${calendarName}"
                     set startDate to current date
-                    set endDate to startDate + (${daysAhead} * days)
+                    set endDate to startDate + (${limitedDays} * days)
                     
                     set eventList to {}
+                    set eventCount to 0
                     repeat with anEvent in (every event of targetCalendar whose start date ≥ startDate and start date ≤ endDate)
+                        set eventCount to eventCount + 1
+                        -- Limit to 100 events to prevent timeout
+                        if eventCount > 100 then exit repeat
+                        
                         set eventInfo to (summary of anEvent) & "|" & (start date of anEvent as string) & "|" & (end date of anEvent as string) & "|" & (description of anEvent)
                         set end of eventList to eventInfo
                     end repeat
@@ -40,12 +49,21 @@ class CalendarService {
                 end tell
             `;
             
-            const result = await runAppleScript(script);
+            // Set a timeout for the AppleScript execution (30 seconds)
+            const timeout = 30000;
+            const timeoutPromise = new Promise((_, reject) => {
+                setTimeout(() => reject(new Error('AppleScript execution timeout')), timeout);
+            });
+            
+            const scriptPromise = runAppleScript(script);
+            const result = await Promise.race([scriptPromise, timeoutPromise]);
+            
             if (!result || result.trim() === '') {
+                console.log('📅 No events found in calendar');
                 return [];
             }
 
-            return result.split(', ').map(eventStr => {
+            const events = result.split(', ').map(eventStr => {
                 const [summary, startDate, endDate, description] = eventStr.split('|');
                 return {
                     summary: summary?.trim() || '',
@@ -54,9 +72,17 @@ class CalendarService {
                     description: description?.trim() || ''
                 };
             });
+            
+            console.log(`📅 Successfully retrieved ${events.length} events`);
+            return events;
+            
         } catch (error) {
             console.error('Error getting events:', error);
-            throw new Error('Failed to retrieve events');
+            // If it's a timeout, provide a more specific error message
+            if (error.message.includes('timeout')) {
+                throw new Error('Apple Calendar is taking too long to respond. Please try again or check fewer days.');
+            }
+            throw new Error('Failed to retrieve events from Apple Calendar');
         }
     }
 

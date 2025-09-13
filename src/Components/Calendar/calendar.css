@@ -1,0 +1,211 @@
+/* McGill-themed React Big Calendar overrides */
+
+/* Import the base calendar styles */
+@import 'react-big-calendar/lib/css/react-big-calendar.css';
+
+/* Calendar container */
+.rbc-calendar {
+    font-family: 'Inter', system-ui, sans-serif;
+    background-color: white;
+    border: 1px solid #E5E7EB;
+    border-radius: 8px;
+}
+
+/* Header styling */
+.rbc-header {
+    background-color: #F9FAFB;
+    border-bottom: 1px solid #E5E7EB;
+    color: #003F5C; /* McGill dark blue */
+    font-weight: 600;
+    padding: 12px 8px;
+    font-size: 14px;
+}
+
+/* Today highlighting */
+.rbc-today {
+    background-color: #FEF2F2; /* Light red background for today */
+}
+
+.rbc-header.rbc-today {
+    background-color: #ED1B2F; /* McGill red */
+    color: white;
+}
+
+/* Event styling */
+.rbc-event {
+    border-radius: 4px;
+    border: none !important;
+    font-size: 12px;
+    padding: 2px 6px;
+    font-weight: 500;
+}
+
+.rbc-event:focus {
+    outline: 2px solid #ED1B2F;
+    outline-offset: 2px;
+}
+
+/* Event colors by type - will be overridden by eventStyleGetter */
+.rbc-event.exam {
+    background-color: #EF4444 !important; /* Red for exams */
+}
+
+.rbc-event.assignment {
+    background-color: #F59E0B !important; /* Orange for assignments */
+}
+
+.rbc-event.office_hours {
+    background-color: #10B981 !important; /* Green for office hours */
+}
+
+.rbc-event.lecture {
+    background-color: #8B5CF6 !important; /* Purple for lectures */
+}
+
+/* Month view specific */
+.rbc-month-view {
+    border: 1px solid #E5E7EB;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.rbc-date-cell {
+    padding: 8px 4px 4px 4px;
+}
+
+.rbc-date-cell > a {
+    color: #374151;
+    font-weight: 500;
+}
+
+.rbc-date-cell > a:hover {
+    color: #ED1B2F;
+}
+
+.rbc-off-range-bg {
+    background-color: #F9FAFB;
+}
+
+/* Week view specific */
+.rbc-time-view {
+    border: 1px solid #E5E7EB;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.rbc-time-header {
+    border-bottom: 2px solid #E5E7EB;
+}
+
+.rbc-time-gutter {
+    background-color: #F9FAFB;
+    border-right: 1px solid #E5E7EB;
+}
+
+.rbc-timeslot-group {
+    border-bottom: 1px solid #F3F4F6;
+}
+
+.rbc-time-slot {
+    border-top: 1px solid #F9FAFB;
+}
+
+/* Current time indicator */
+.rbc-current-time-indicator {
+    background-color: #ED1B2F;
+    height: 2px;
+}
+
+/* Selected event */
+.rbc-selected {
+    background-color: #DC2626 !important;
+    box-shadow: 0 0 0 2px #FEE2E2;
+}
+
+/* Event resizing and dragging (if enabled) */
+.rbc-addons-dnd .rbc-addons-dnd-resizable-month-event {
+    border: 1px solid #ED1B2F;
+}
+
+/* Scrollbar styling for time views */
+.rbc-time-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.rbc-time-content::-webkit-scrollbar-track {
+    background: #F3F4F6;
+    border-radius: 4px;
+}
+
+.rbc-time-content::-webkit-scrollbar-thumb {
+    background: #D1D5DB;
+    border-radius: 4px;
+}
+
+.rbc-time-content::-webkit-scrollbar-thumb:hover {
+    background: #9CA3AF;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    .rbc-toolbar {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .rbc-toolbar-label {
+        order: -1;
+        font-size: 16px;
+        margin-bottom: 8px;
+    }
+    
+    .rbc-btn-group {
+        display: flex;
+        justify-content: center;
+    }
+    
+    .rbc-header {
+        font-size: 12px;
+        padding: 8px 4px;
+    }
+    
+    .rbc-event {
+        font-size: 11px;
+        padding: 1px 4px;
+    }
+}
+
+/* Reading Week and Exam Period highlighting */
+.rbc-day-bg.reading-week {
+    background-color: #FEF3C7; /* Light yellow */
+    background-image: linear-gradient(45deg, transparent 25%, rgba(251, 191, 36, 0.1) 25%, rgba(251, 191, 36, 0.1) 50%, transparent 50%, transparent 75%, rgba(251, 191, 36, 0.1) 75%);
+    background-size: 8px 8px;
+}
+
+.rbc-day-bg.exam-period {
+    background-color: #FEE2E2; /* Light red */
+    background-image: linear-gradient(45deg, transparent 25%, rgba(239, 68, 68, 0.1) 25%, rgba(239, 68, 68, 0.1) 50%, transparent 50%, transparent 75%, rgba(239, 68, 68, 0.1) 75%);
+    background-size: 8px 8px;
+}
+
+/* Custom loading spinner */
+.calendar-loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+}
+
+.calendar-loading .spinner {
+    border: 3px solid #F3F4F6;
+    border-top: 3px solid #ED1B2F;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}

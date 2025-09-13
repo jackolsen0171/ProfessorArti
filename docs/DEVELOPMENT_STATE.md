@@ -156,14 +156,58 @@ npx tsc --noEmit   # Type checking
 - **Standardized**: TypeScript across entire frontend
 - **Simplified**: Development and deployment workflow
 
+## UI/UX Pivot Decision - 2025-01-11
+
+### **Strategic Pivot: Dashboard-First Design**
+The application is pivoting from a graph-centric design to a task/calendar-focused dashboard:
+
+**Previous Focus**: Knowledge graph as the main interface
+**New Focus**: Student productivity dashboard with integrated AI support
+
+### **New Information Architecture**
+1. **Main Dashboard** (Primary View)
+   - Welcome message with personalized greeting
+   - Todo list based on McGill calendar events
+   - Upcoming assignments and deadlines
+   - Quick access to professors and courses
+   - Calendar integration for academic events
+
+2. **Professor Chat** (Secondary View)
+   - Context-aware conversations based on current coursework
+   - Smart suggestions for upcoming assignments
+   - Integrated with todo list and calendar
+
+3. **Knowledge Graph** (Tertiary Feature)
+   - Moved to secondary navigation
+   - Accessible via menu or quick action
+   - Simplified visualization for professor connections
+
+### **Rationale for Pivot**
+- Better aligns with student daily workflow
+- Prioritizes actionable tasks over exploration
+- Maintains AI chat as core feature while adding practical utility
+- Graph visualization preserved but de-emphasized
+
 ## Next Development Priorities
 
-### **Phase 2: Enhancement (Optional)**
-1. **UI/UX Polish** - Enhanced visual design
-2. **Performance Optimization** - Large dataset handling
-3. **Testing Suite** - Comprehensive test coverage
-4. **Mobile Responsiveness** - Cross-device support
-5. **Advanced AI Features** - Enhanced conversation capabilities
+### **Phase 2: Dashboard Implementation**
+1. **Dashboard UI Development**
+   - Task list component with McGill calendar integration
+   - Professor cards with quick chat access
+   - Course overview with deadlines
+   - Responsive grid layout with Tailwind CSS
+
+2. **Calendar Integration Enhancement**
+   - Sync with McGill academic calendar
+   - Parse and display assignments/exams
+   - Smart task generation from calendar events
+   - Due date tracking and notifications
+
+3. **Professor List Refactor**
+   - Compact card view with avatars
+   - Office hours integration
+   - Quick chat launcher
+   - Course association display
 
 ### **Phase 3: Production (Future)**
 1. **Deployment Pipeline** - CI/CD setup

@@ -259,7 +259,7 @@ const Chatbot = ({ professor }) => {
     };
 
     return (
-        <div className="modern-chat-container">
+        <div className="modern-chat-container h-full flex flex-col">
             <div className="modern-chat-header">
                 <div className="professor-info">
                     <span className="professor-avatar">{professorInfo?.avatar || '🤖'}</span>
@@ -299,7 +299,7 @@ const Chatbot = ({ professor }) => {
                 </div>
             )}
 
-            <div className="modern-chat-messages">
+            <div className="modern-chat-messages flex-1 overflow-y-auto">
                 {messages.length === 0 && (
                     <div className="empty-chat-message">
                         👋 Start a conversation with {professorInfo?.name || professor}!
@@ -357,7 +357,7 @@ const Chatbot = ({ professor }) => {
                 )}
             </div>
 
-            <div className="modern-input-container">
+            <div className="modern-input-container mt-auto flex-shrink-0">
                 <input 
                     type="file" 
                     ref={fileInputRef}
