@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import SemesterCalendar from './SemesterCalendar';
 
 interface CalendarSidebarProps {

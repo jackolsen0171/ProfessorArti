@@ -1,4 +1,3 @@
-import React from 'react';
 import './McGillHeader.css';
 
 function McGillHeader() {
@@ -18,7 +17,7 @@ function McGillHeader() {
           </div>
         </div>
         <nav className="mcgill-nav">
-          <a href="/" className="nav-link">Graph</a>
+          <a href="/dashboard" className="nav-link">Dashboard</a>
           <a href="/upload" className="nav-link">Upload</a>
           <a href="/about" className="nav-link">About</a>
         </nav>

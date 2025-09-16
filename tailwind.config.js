@@ -18,9 +18,6 @@ module.exports = {
         },
         
         // Professor Arti Graph Colors
-        'graph-node': '#3B82F6',
-        'graph-link': '#6B7280',
-        'graph-hover': '#1D4ED8',
         
         // UI Colors
         'chat-bg': '#F8FAFC',

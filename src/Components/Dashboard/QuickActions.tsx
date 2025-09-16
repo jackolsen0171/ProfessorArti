@@ -1,16 +1,10 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import FileUpload from '../FileUpload';
 
 const QuickActions: React.FC = () => {
-    const navigate = useNavigate();
     const [showAddTaskModal, setShowAddTaskModal] = useState(false);
     const [showUploadModal, setShowUploadModal] = useState(false);
-    
-    const handleViewGraph = () => {
-        navigate('/graph');
-    };
-    
+
     const handleScheduleStudy = () => {
         // This would open a scheduling modal or integrate with calendar
         console.log('Schedule study session');
@@ -36,14 +30,6 @@ const QuickActions: React.FC = () => {
                     >
                         <span className="text-2xl mb-2">📅</span>
                         <span className="text-sm font-medium text-gray-700">Schedule Study</span>
-                    </button>
-                    
-                    <button
-                        onClick={handleViewGraph}
-                        className="flex flex-col items-center justify-center p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-red-500 hover:bg-red-50 transition"
-                    >
-                        <span className="text-2xl mb-2">🕸️</span>
-                        <span className="text-sm font-medium text-gray-700">Knowledge Graph</span>
                     </button>
                     
                     <button

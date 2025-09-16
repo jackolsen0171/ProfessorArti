@@ -70,13 +70,14 @@ src/
 ├── App.tsx              # Main routing (TypeScript)
 ├── main.tsx             # Entry point (TypeScript)  
 ├── Components/
-│   ├── Home.tsx         # Landing page with graph
-│   ├── ProfessorGraph.tsx  # D3.js force simulation
+│   ├── Calendar/        # Calendar sidebar + test harness
 │   ├── Chat.tsx         # Chat interface route
 │   ├── ChatBot.tsx      # AI conversation logic
-│   ├── McGillHeader.tsx # University branding
+│   ├── Dashboard/       # Dashboard widgets (tasks, calendar, professors)
+│   ├── Dashboard.tsx    # Dashboard composition shell
+│   ├── FileUpload.tsx   # Document upload
 │   ├── McGillFooter.tsx # Footer component
-│   └── FileUpload.tsx   # Document upload
+│   └── McGillHeader.tsx # University branding
 ```
 
 ### Backend (Express.js) ✅ OPERATIONAL
@@ -86,7 +87,6 @@ backend/
 ├── routes/
 │   ├── chat.js        # AI chat endpoints (/api/chat) ✅ ACTIVE
 │   ├── documents.js   # File upload (/api/documents) ✅ ACTIVE  
-│   ├── graph.js       # Graph data (/api/graph) ✅ ACTIVE
 │   └── calendar.js    # Apple Calendar integration ✅ ACTIVE
 ├── services/
 │   ├── chromadb.js    # Vector database operations
@@ -103,12 +103,11 @@ backend/
 ## Feature Status
 
 ### ✅ **Core Features - OPERATIONAL**
-1. **Interactive Knowledge Graph** - D3.js force-directed visualization
-2. **AI-Powered Chat** - Real conversations with professor personas
-3. **Document Intelligence** - Upload and chat about documents
-4. **Semantic Search** - Vector-based document retrieval
-5. **Multi-Professor System** - Different AI personalities
-6. **Apple Calendar Integration** - AI-powered event creation
+1. **AI-Powered Chat** - Real conversations with professor personas
+2. **Document Intelligence** - Upload and chat about documents
+3. **Semantic Search** - Vector-based document retrieval
+4. **Multi-Professor System** - Different AI personalities
+5. **Apple Calendar Integration** - AI-powered event creation
 
 ### ✅ **Technical Features - OPERATIONAL**
 1. **Type Safety** - Full TypeScript coverage
@@ -159,12 +158,12 @@ npx tsc --noEmit   # Type checking
 ## UI/UX Pivot Decision - 2025-01-11
 
 ### **Strategic Pivot: Dashboard-First Design**
-The application is pivoting from a graph-centric design to a task/calendar-focused dashboard:
+The application has fully transitioned to a task/calendar-focused dashboard experience:
 
 **Previous Focus**: Knowledge graph as the main interface
 **New Focus**: Student productivity dashboard with integrated AI support
 
-### **New Information Architecture**
+### **Current Information Architecture**
 1. **Main Dashboard** (Primary View)
    - Welcome message with personalized greeting
    - Todo list based on McGill calendar events
@@ -177,16 +176,11 @@ The application is pivoting from a graph-centric design to a task/calendar-focus
    - Smart suggestions for upcoming assignments
    - Integrated with todo list and calendar
 
-3. **Knowledge Graph** (Tertiary Feature)
-   - Moved to secondary navigation
-   - Accessible via menu or quick action
-   - Simplified visualization for professor connections
-
 ### **Rationale for Pivot**
 - Better aligns with student daily workflow
 - Prioritizes actionable tasks over exploration
 - Maintains AI chat as core feature while adding practical utility
-- Graph visualization preserved but de-emphasized
+- Knowledge graph functionality removed in favor of productivity tooling
 
 ## Next Development Priorities
 
@@ -221,7 +215,6 @@ The application is pivoting from a graph-centric design to a task/calendar-focus
 - **React 19**: Excellent foundation with latest features
 - **TypeScript**: Comprehensive type safety and developer experience
 - **Vite**: Superior development experience and build performance
-- **D3.js**: Powerful visualization capabilities
 - **ChromaDB**: Effective vector search and RAG implementation
 - **Express.js**: Robust and familiar backend framework
 

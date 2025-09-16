@@ -1,6 +1,6 @@
 // Utility functions for calendar data transformation and processing
 
-import { CalendarEvent, AppleCalendarEvent } from './types';
+import { CalendarEvent } from './types';
 
 /**
  * Transform Apple Calendar event data to React Big Calendar format
@@ -63,7 +63,6 @@ export const extractCourseCode = (title: string): string => {
  */
 export const isAllDayEvent = (start: Date, end: Date): boolean => {
     const startTime = start.getHours() * 60 + start.getMinutes();
-    const endTime = end.getHours() * 60 + end.getMinutes();
     const duration = (end.getTime() - start.getTime()) / (1000 * 60 * 60); // hours
     
     // Consider all-day if starts at midnight or duration is 24 hours or more

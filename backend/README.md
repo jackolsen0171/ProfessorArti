@@ -1,6 +1,6 @@
 # Professor Arti Backend
 
-Express.js API server for Professor Arti knowledge visualization platform.
+Express.js API server for Professor Arti's productivity dashboard and AI assistant.
 
 ## 🚀 Quick Start
 
@@ -31,12 +31,6 @@ npm run backend:dev
 - `DELETE /api/documents/:id` - Delete document
 - `POST /api/documents/search` - Semantic search in documents
 
-### Graph Data
-- `GET /api/graph/data` - Get graph nodes and links
-- `GET /api/graph/node/:id` - Get node details
-- `POST /api/graph/update` - Update graph structure
-- `GET /api/graph/search?q=query` - Search graph nodes
-
 ## 🏗️ Architecture
 
 ```
@@ -45,9 +39,10 @@ backend/
 ├── routes/
 │   ├── chat.js            # AI chat endpoints
 │   ├── documents.js       # File upload/processing
-│   └── graph.js           # Graph data operations
+│   └── calendar.js        # Apple Calendar integration
 ├── services/
 │   ├── chromadb.js        # Vector database operations
+│   ├── calendar.js        # AppleScript calendar service
 │   └── openai.js          # AI service integration
 └── uploads/               # File upload directory
 ```
@@ -91,8 +86,8 @@ curl -X POST -H "Content-Type: application/json" \
   -d '{"message":"Hello!","professorId":"ai-tutor"}' \
   http://localhost:5001/api/chat
 
-# Test graph data
-curl http://localhost:5001/api/graph/data
+# Test calendar events
+curl http://localhost:5001/api/calendar/events
 ```
 
 ## 📦 Dependencies

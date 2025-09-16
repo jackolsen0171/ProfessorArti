@@ -1,4 +1,3 @@
-import React from 'react';
 import SemesterCalendar from './SemesterCalendar';
 
 // Test component to verify calendar functionality

@@ -4,7 +4,6 @@ const path = require('path');
 
 const chatRoutes = require('./routes/chat');
 const documentRoutes = require('./routes/documents');
-const graphRoutes = require('./routes/graph');
 const calendarRoutes = require('./routes/calendar');
 
 const app = express();
@@ -27,7 +26,6 @@ app.use((req, res, next) => {
 // API Routes
 app.use('/api/chat', chatRoutes);
 app.use('/api/documents', documentRoutes);
-app.use('/api/graph', graphRoutes);
 app.use('/api/calendar', calendarRoutes);
 
 // Health check endpoint

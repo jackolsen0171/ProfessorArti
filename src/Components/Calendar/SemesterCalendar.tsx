@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Calendar, momentLocalizer, View } from 'react-big-calendar';
+import type { ToolbarProps } from 'react-big-calendar';
+import type { FC } from 'react';
 import moment from 'moment';
 import axios from 'axios';
 import './calendar.css'; // Custom McGill styling
 import { CalendarEvent, CalendarProps, SemesterInfo } from './types';
-import { transformAppleCalendarEvent, getEventColor, formatEventDuration } from './calendarUtils';
+import { transformAppleCalendarEvent, getEventColor } from './calendarUtils';
+import { API_BASE_URL } from '../../config';
 
 // Setup the localizer with moment
 const localizer = momentLocalizer(moment);
-
-// API configuration
-const API_BASE_URL = 'http://localhost:8001/api';
 
 // McGill Winter 2025 semester dates
 const WINTER_2025: SemesterInfo = {
@@ -141,7 +141,7 @@ const SemesterCalendar: React.FC<CalendarProps> = ({
     };
 
     // Custom toolbar
-    const CustomToolbar = (toolbar: any) => {
+    const CustomToolbar: FC<ToolbarProps<CalendarEvent>> = (toolbar) => {
         const goToBack = () => {
             toolbar.onNavigate('PREV');
         };
@@ -197,7 +197,7 @@ const SemesterCalendar: React.FC<CalendarProps> = ({
                     </button>
                     
                     <div className="flex space-x-1">
-                        {['month', 'week'].map((view) => (
+                        {(['month', 'week'] as View[]).map((view) => (
                             <button
                                 key={view}
                                 onClick={() => toolbar.onView(view)}
@@ -306,7 +306,15 @@ const SemesterCalendar: React.FC<CalendarProps> = ({
                     <div className="flex flex-wrap gap-3 text-xs border-t pt-2">
                         <span className="text-gray-500 font-medium">Courses:</span>
                         {Array.from(new Set(events.filter(e => e.course).map(e => e.course))).slice(0, 6).map(course => {
-                            const mockEvent = { course, type: 'event' as const };
+                            const mockEvent: CalendarEvent = {
+                                id: `legend-${course}`,
+                                title: course ?? 'Course',
+                                start: WINTER_2025.startDate,
+                                end: WINTER_2025.startDate,
+                                allDay: true,
+                                course,
+                                type: 'event'
+                            };
                             const color = getEventColor(mockEvent);
                             return (
                                 <div key={course} className="flex items-center gap-1">

@@ -2,11 +2,11 @@
 
 ## Executive Summary
 
-Professor Arti is an interactive course visualization and AI chat platform designed specifically for McGill University students. Users log in with their McGill credentials to view a personalized graph of their professors, then click on any professor node to chat with an AI assistant about that professor's specific courses and syllabi.
+Professor Arti is a productivity-focused academic assistant designed specifically for McGill University students. Users log in with their McGill credentials to access a personalized dashboard that surfaces upcoming tasks, calendar events, and quick access to an AI assistant that understands their professors' courses and syllabi.
 
 ## Project Vision
 
-Create an intuitive platform where McGill students can visually explore their academic relationships with professors and engage in AI-powered conversations about specific courses, syllabi, and academic content.
+Create an intuitive platform where McGill students can stay on top of their course work, manage deadlines, and engage in AI-powered conversations about specific courses, syllabi, and academic content.
 
 ## Target Users
 
@@ -21,12 +21,11 @@ Create an intuitive platform where McGill students can visually explore their ac
 
 ## Core Features
 
-### 1. Interactive Professor Graph Visualization
-- **D3.js force-directed graph** showing the user's professors as nodes
-- **Dynamic node sizing** based on number of courses or student enrollment
-- **Smooth zoom and pan** interactions for graph exploration
-- **Color-coded categories** for different departments/faculties
-- **Clickable professor nodes** that navigate to course-specific chat interface
+### 1. Student Productivity Dashboard
+- **Task overview** surfacing upcoming assignments and deadlines
+- **Calendar snapshot** highlighting events pulled from Apple Calendar integration
+- **Professor quick access** with unread indicators and office hours status
+- **Quick actions** for adding tasks, scheduling study blocks, and uploading documents
 
 ### 2. Course-Specific AI Chat Interface  
 - **AI assistant** trained on specific professor's course materials and syllabi
@@ -36,77 +35,77 @@ Create an intuitive platform where McGill students can visually explore their ac
 - **Real-time responses** with typing indicators and smooth UX
 
 ### 3. McGill Authentication & Navigation
-- **McGill SSO login** as the entry point
-- **Personalized graph view** (`/`) showing user's professors after authentication
+- **McGill SSO login** as the entry point (pending implementation)
+- **Dashboard default view** (`/dashboard`) showing personalized academic context
 - **Professor chat interface** (`/chatbot/:professorId`) for course-specific conversations
 - **Batch syllabus upload** accessible from top navigation bar
-- **Seamless transitions** between graph exploration and course chat
+- **Seamless transitions** between dashboard widgets and AI chat
 
 ### 4. Syllabus Processing & Data Integration
 - **ChromaDB integration** for vector storage and semantic search of syllabi
 - **Batch syllabus processing pipeline** for multiple document uploads
 - **McGill course catalog integration** for professor-course relationships
-- **Dynamic graph data updates** based on uploaded syllabi and course data
+- **Dashboard data updates** based on uploaded syllabi and course data
 
 ## Technical Architecture
 
 ### Current Tech Stack
-- **Frontend**: React 19, React Router DOM 6.22.3
+- **Frontend**: React 19, React Router DOM 6.22.3, TypeScript 5.9
+- **Styling**: Tailwind CSS 3.4, custom CSS modules
 - **Authentication**: McGill SSO/SAML integration (to be implemented)
-- **Visualization**: D3.js 7.9.0
 - **Vector Database**: ChromaDB 3.0.14
 - **HTTP Client**: Axios 1.7.9
-- **Build System**: Create React App (CRA) 5.0.1
+- **Build System**: Vite 6.3
 
 ### Key Components
-- `App.js`: Main routing, authentication, and application structure
-- `ProfessorGraph.js`: D3.js visualization component showing user's professors
-- `Chat.js`: Course-specific conversational interface for selected professors
-- `FileUpload.js`: Individual syllabus upload functionality
-- `BatchUpload.js`: Bulk syllabus processing component (top navigation)
-- `Home.js`: Authenticated landing page and professor graph container
-- `Login.js`: McGill SSO authentication component
+- `App.tsx`: Main routing, authentication, and application structure
+- `Dashboard.tsx`: Productivity dashboard composition shell
+- `Dashboard/*`: Widgets for tasks, calendar events, professor list, quick actions
+- `Chat.tsx`: Course-specific conversational interface for selected professors
+- `ChatBot.tsx`: AI chat experience with uploads and calendar extraction
+- `FileUpload.tsx`: Individual and batch syllabus upload functionality
+- `Calendar/*`: Calendar sidebar and test harness powered by react-big-calendar
+- `Login.tsx`: McGill SSO authentication component (pending)
 
 ## User Journey
 
 ### Primary Flow
 1. **McGill SSO login** - User authenticates with McGill credentials
-2. **View professor graph** - User sees personalized visualization of their professors
-3. **Explore professor connections** - Click and drag nodes, zoom to explore relationships  
-4. **Select professor** - Click on specific professor node to access their courses
-5. **Chat about courses** - Navigate to AI chat interface for that professor's courses
-6. **Upload syllabi** - Use batch upload to add course materials (accessible from top bar)
-7. **Return to exploration** - Navigate back to graph with enriched course data
+2. **Land on dashboard** - User views personalized tasks, events, and professor list
+3. **Review upcoming items** - User checks tasks and calendar events surfaced on dashboard
+4. **Access AI support** - User launches course-specific chat from professor list or quick action
+5. **Upload syllabi** - User adds course materials via upload modal to enrich AI context
+6. **Manage schedule** - User extracts dates to Apple Calendar directly from chat responses
 
 ### Secondary Flows
 - **Direct professor chat access** - Users can bookmark specific professor chat URLs
-- **Syllabus-first interaction** - Batch upload syllabi first, then explore updated professor graph
-- **Course-driven discovery** - Find specific course content through conversational queries
-- **Cross-professor exploration** - Discover connections between different professors' courses
+- **Syllabus-first interaction** - Batch upload syllabi first, then review updated dashboard context
+- **Task-driven workflow** - Start from quick actions to add tasks or schedule study sessions
+- **Calendar-first workflow** - Open calendar sidebar to review events and jump into related chats
 
 ## Success Metrics
 
 ### Engagement Metrics
-- **Session duration** on graph visualization
-- **Node interaction rate** (clicks, drags, zooms per session)
+- **Dashboard session duration** (time spent engaging with tasks and events)
+- **Quick action usage rate** (actions triggered per session)
 - **Chat conversation depth** (messages per conversation thread)
-- **Return user rate** for continued exploration
+- **Return user rate** for continued planning support
 
 ### Educational Effectiveness  
 - **Knowledge retention** through pre/post interaction assessments
-- **User satisfaction** with explanation quality and graph usefulness
+- **User satisfaction** with explanation quality and dashboard usefulness
 - **Task completion rate** for research/learning objectives
 
 ## Non-Functional Requirements
 
 ### Performance
-- **Professor graph rendering** must handle 100+ professor nodes smoothly at 60fps
+- **Dashboard rendering** must handle multiple widgets without layout shift
 - **Course chat responses** should appear within 2 seconds of user input
 - **Batch syllabus upload** should provide progress feedback and handle 50+ PDFs simultaneously
 - **McGill SSO authentication** should complete within 3 seconds
 
 ### Accessibility
-- **Keyboard navigation** for graph elements and chat interface
+- **Keyboard navigation** for dashboard widgets and chat interface
 - **Screen reader compatibility** with semantic HTML and ARIA labels
 - **Color contrast compliance** with WCAG 2.1 AA standards
 
@@ -122,21 +121,21 @@ Create an intuitive platform where McGill students can visually explore their ac
 - **Course scheduling integration** - Connect with McGill's course registration system
 - **Grade and assignment tracking** - Link syllabus content to actual coursework
 - **Study group formation** - Connect students taking similar courses
-- **Mobile responsiveness** - Touch-optimized professor graph interactions
+- **Mobile responsiveness** - Touch-optimized dashboard and chat interactions
 - **Advanced analytics** - Track learning paths and course relationships
 
 ### Integration Opportunities
 - **McGill Minerva integration** - Direct connection to course registration system
 - **Canvas/MyCourses compatibility** - Sync with existing McGill LMS
 - **McGill Library integration** - Access to course readings and reserves
-- **Export functionality** - Save course conversations and professor connections
+- **Export functionality** - Save course conversations and schedule snapshots
 - **Faculty API endpoints** - Allow professors to update their course information
 
 ## Risk Assessment
 
 ### Technical Risks
 - **McGill SSO integration** complexity and institutional approval requirements
-- **D3.js performance** with professor graphs and complex course relationships
+- **Dashboard performance** when aggregating large task/calendar datasets
 - **ChromaDB scaling** for thousands of syllabi and course documents
 - **Data privacy** compliance with McGill's student information policies
 

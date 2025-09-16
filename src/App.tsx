@@ -1,6 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import Dashboard from "./Components/Dashboard";
-import Home from "./Components/Home";
 import Chat from "./Components/Chat";
 import CalendarTest from "./Components/Calendar/CalendarTest";
 
@@ -13,7 +12,6 @@ function App() {
         <Routes>
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/graph" element={<Home />} />
           <Route path="/chatbot/:professorId" element={<Chat />} />
           <Route path="/calendar-test" element={<CalendarTest />} />
         </Routes>

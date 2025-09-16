@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 const WelcomeSection: React.FC = () => {
     const [currentDate, setCurrentDate] = useState(new Date());
-    const [studyStreak, setStudyStreak] = useState(5); // Mock data
+    const [studyStreak] = useState(5); // Mock data
     const userName = "Student"; // This would come from auth/context
     
     // Calculate week of semester (mock calculation)

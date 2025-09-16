@@ -7,47 +7,34 @@
 - **Pros**: 
   - Server components and concurrent features for performance
   - Strong TypeScript support (if migrated)
-  - Extensive D3.js integration patterns
+  - Mature ecosystem for dashboard and chat tooling
   - Large community and documentation
 - **Cons**: 
   - Steeper learning curve for complex state management
   - Bundle size considerations for large applications
 - **Decision**: ✅ **Keep** - Modern React provides excellent foundation
 
-### Build System: Create React App 5.0.1
-- **Current status**: Standard CRA setup
+### Build System: Vite 6.3
+- **Current status**: Lightweight dev server and bundler
 - **Pros**: 
-  - Zero configuration out of the box
-  - Built-in development server and hot reloading
-  - Optimized production builds
+  - Blazing fast cold starts and HMR
+  - First-class TypeScript and React support
+  - Sensible default configuration with easy customization
 - **Cons**: 
-  - Limited build customization without ejecting
-  - Larger bundle sizes compared to modern alternatives
-  - Webpack 4 dependencies (slightly outdated)
-- **Decision**: ⚠️ **Consider migration** to Vite for better performance
+  - Requires familiarity with ESM for plugin ecosystem
+  - Some legacy tooling assumes Webpack conventions
+- **Decision**: ✅ **Keep** - Ideal for rapid dashboard iterations
 
 ### Routing: React Router DOM 6.22.3
-- **Chosen for**: Client-side routing between graph and chat views
+- **Chosen for**: Client-side routing between dashboard, chat, and calendar views
 - **Pros**: 
   - Excellent React integration
   - Declarative routing approach
   - Built-in navigation hooks
 - **Cons**: 
   - Bundle size for simple routing needs
-  - Over-engineered for current use case
+  - Some patterns overlap with native browser navigation
 - **Decision**: ✅ **Keep** - Provides room for future feature expansion
-
-### Visualization: D3.js 7.9.0
-- **Chosen for**: Force-directed graph visualization
-- **Pros**: 
-  - Unmatched flexibility for custom visualizations
-  - Excellent performance for complex interactions
-  - Rich ecosystem of examples and plugins
-- **Cons**: 
-  - Steep learning curve
-  - React integration complexity
-  - Large library size
-- **Decision**: ✅ **Keep** - Essential for graph functionality
 
 ### Vector Database: ChromaDB 3.0.14
 - **Chosen for**: Semantic search and vector storage
@@ -74,17 +61,17 @@
 
 ## Architecture Analysis
 
-### Current Architecture: Client-Side Monolith
+### Current Architecture: Dashboard-Centric SPA
 ```
 ┌─────────────────────────────────────────┐
 │               Browser                   │
 │  ┌─────────────┐  ┌─────────────────┐   │
-│  │   React     │  │    ChromaDB     │   │
-│  │     App     │◄─┤   (Vector DB)   │   │
+│  │   React     │  │   REST / Axios  │   │
+│  │     App     │◄─┤  (Backend API)  │   │
 │  └─────────────┘  └─────────────────┘   │
 │  ┌─────────────┐  ┌─────────────────┐   │
-│  │    D3.js    │  │   File Upload   │   │
-│  │ Visualization│  │   Processing    │   │
+│  │ Dashboard & │  │   File Upload   │   │
+│  │ Chat Views  │  │   Pipeline      │   │
 │  └─────────────┘  └─────────────────┘   │
 └─────────────────────────────────────────┘
 ```
@@ -96,12 +83,12 @@
 │  ┌───────────┐  │    │  ┌───────────────┐  │
 │  │  React    │  │◄──►│  │   Express     │  │
 │  │   SPA     │  │    │  │   API Server  │  │
-│  └───────────┘  │    │  └───────────────┘  │
-│  ┌───────────┐  │    │  ┌───────────────┐  │
-│  │   D3.js   │  │    │  │   ChromaDB    │  │
-│  │ Graphs    │  │    │  │  + Embedding  │  │
-│  └───────────┘  │    │  │   Services    │  │
-└─────────────────┘    │  └───────────────┘  │
+│  ├───────────┤  │    │  └───────────────┘  │
+│  │ Dashboard │  │    │  ┌───────────────┐  │
+│  │ & Chat UI │  │    │  │   ChromaDB    │  │
+│  └───────────┘  │    │  │  + Embedding  │  │
+└─────────────────┘    │  │   Services    │  │
+                       │  └───────────────┘  │
                        │  ┌───────────────┐  │
                        │  │   LLM APIs    │  │
                        │  │ (OpenAI/etc)  │  │
@@ -142,7 +129,6 @@
 {
   "typescript": "^5.0.0",
   "@types/react": "^18.0.0",
-  "@types/d3": "^7.0.0",
   "eslint": "^8.0.0",
   "prettier": "^3.0.0",
   "husky": "^8.0.0",

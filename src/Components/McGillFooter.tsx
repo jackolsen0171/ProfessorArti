@@ -1,4 +1,3 @@
-import React from 'react';
 import './McGillFooter.css';
 
 function McGillFooter() {
@@ -13,7 +12,7 @@ function McGillFooter() {
         <div className="footer-section">
           <h4>Quick Links</h4>
           <ul className="footer-links">
-            <li><a href="/">Knowledge Graph</a></li>
+            <li><a href="/dashboard">Dashboard</a></li>
             <li><a href="/upload">Upload Documents</a></li>
             <li><a href="/help">Help & Support</a></li>
           </ul>

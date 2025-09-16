@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 
 interface Professor {
     id: string;
@@ -14,7 +13,7 @@ interface Professor {
 
 const ProfessorList: React.FC = () => {
     const navigate = useNavigate();
-    const [professors, setProfessors] = useState<Professor[]>([
+    const professors: Professor[] = [
         {
             id: 'ai-tutor',
             name: 'AI Tutor',
@@ -46,38 +45,7 @@ const ProfessorList: React.FC = () => {
             officeHours: false,
             unreadMessages: 1
         }
-    ]);
-    
-    useEffect(() => {
-        // Fetch professor data from graph API
-        const fetchProfessors = async () => {
-            try {
-                const response = await axios.get('http://localhost:8001/api/graph/data');
-                if (response.data.success && response.data.data.nodes) {
-                    // Transform graph nodes to professor format
-                    const professorData = response.data.data.nodes
-                        .filter((node: any) => node.group === 1) // Filter professor nodes
-                        .map((node: any) => ({
-                            id: node.id.toLowerCase().replace(/\s+/g, '-'),
-                            name: node.id,
-                            course: node.course || 'General',
-                            expertise: node.expertise || [],
-                            officeHours: Math.random() > 0.5, // Mock office hours
-                            unreadMessages: Math.floor(Math.random() * 3)
-                        }));
-                    
-                    if (professorData.length > 0) {
-                        setProfessors(professorData);
-                    }
-                }
-            } catch (error) {
-                console.error('Error fetching professors:', error);
-                // Keep mock data on error
-            }
-        };
-        
-        fetchProfessors();
-    }, []);
+    ];
     
     const handleChatClick = (professorId: string) => {
         navigate(`/chatbot/${professorId}`);
